@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <title>Generador Facturas</title>
+
+    <script>
+      function isEmpty(field)
+      {
+        return (field.value.trim().length == 0);
+      }
+
+      function isDigit(field)
+      {
+          return !(isNaN(parseFloat(field.value)))
+      }
+
+      function check()
+      {
+        const lblCapacity = document.getElementById("lblCapacity");
+        const lblPriceUnit = document.getElementById("lblPriceUnit");
+        const lblQuantity = document.getElementById("lblQuantity");
+        const lblGross = document.getElementById("lblGross");
+        const lblIva = document.getElementById("lblIva");
+        const lblTotal = document.getElementById("lblTotal");
+
+        return (
+            !isEmpty(lblCapacity) &&
+            (!isEmpty(lblPriceUnit) && is_digit(lblPriceUnit)) &&
+            (!isEmpty(lblQuantity) && is_digit(lblQuantity)) &&
+            (!isEmpty(lblGross) && is_digit(lblGross)) &&
+            (!isEmpty(lblIva) && is_digit(lblIva)) &&
+            (!isEmpty(lblTotal) && is_digit(lblTotal))
+        )
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- CIF, nombre, dirección, población, provincia, código postal, país, persona de contacto, email, y teléfono -->
+    <div class="container">
+      <h1>Factura</h1>
+      <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">CIF</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Dirección</th>
+          <th scope="col">Población</th>
+          <th scope="col">Provincia</th>
+          <th scope="col">Código postal</th>
+          <th scope="col">País</th>
+          <th scope="col">Persona de contacto</th>
+          <th scope="col">Email</th>
+          <th scope="col">Teléfono</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Datos emisor</th>
+          <td>{{invoice.issuer.lblCif}}</td>
+          <td>{{invoice.issuer.lblName}}</td>
+          <td>{{invoice.issuer.lblAddress}}</td>
+          <td>{{invoice.issuer.lblCity}}</td>
+          <td>{{invoice.issuer.lblProvince}}</td>
+          <td>{{invoice.issuer.lblPostalCode}}</td>
+          <td>{{invoice.issuer.lblCountry}}</td>
+          <td>{{invoice.issuer.lblContact}}</td>
+          <td>{{invoice.issuer.lblEmail}}</td>
+          <td>{{invoice.issuer.lblPhone}}</td>
+        </tr>
+        <tr>
+          <th scope="row">Datos cliente</th>
+          <td>{{invoice.client.lblName}}</td>
+          <td>{{invoice.client.lblAddress}}</td>
+          <td>{{invoice.client.lblCity}}</td>
+          <td>{{invoice.client.lblProvince}}</td>
+          <td>{{invoice.client.lblPostalCode}}</td>
+          <td>{{invoice.client.lblCountry}}</td>
+          <td>{{invoice.client.lblContact}}</td>
+          <td>{{invoice.client.lblEmail}}</td>
+          <td>{{invoice.client.lblPhone}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="text-info">Lineas de detalle</h3>
+    {% if invoice.lines %}
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Concepto</th>
+              <th scope="col">Precio ud.</th>
+              <th scope="col">Unidades</th>
+              <th scope="col">Importe bruto</th>
+              <th scope="col">IVA %</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+            {% for line in invoice.lines %}
+            <tr>
+              <th scope="row">{{ loop.index }}</th>
+              <td>{{line.lblCapacity}}</td>
+              <td>{{line.lblPriceUnit}}</td>
+              <td>{{line.lblQuantity}}</td>
+              <td>{{line.lblGross}}</td>
+              <td>{{line.lblIva}}</td>
+              <td>{{line.lblTotal}}</td>
+              </th>
+            </tr>
+          {% endfor %}
+          <tbody>
+          </tbody>
+        </table>
+
+    {% else %}
+      <p class="text-muted">No hay ninguna línea de factura</p>
+    {% endif %}
+
+    </div>
+
+    <div class="container">
+
+    <!--  concepto, precio por unidad, unidades, importe bruto, porcentaje IVA, importe total -->
+    <h2>Nueva línea de factura</h2>
+    <form id="formLineInvoice"
+          action="/invoice"
+          method="post"
+          onsubmit="return check()">
+      <div class="form-group">
+          <label for="lblCapacity">Concepto:</label>
+          <input class="form-control" type="text" id="lblCapacity" name="lblCapacity" />
+      </div>
+
+      <div class="form-group">
+        <label for="lblPriceUnit">Precio ud.:</label>
+        <input class="form-control" type="text" id="lblPriceUnit" name="lblPriceUnit" />
+      </div>
+
+      <div class="form-group">
+        <label for="lblQuantity">Unidades:</label>
+        <input class="form-control" type="text" id="lblQuantity" name="lblQuantity" />
+      </div>
+
+      <div class="form-group">
+        <label for="lblGross">Importe bruto:</label>
+        <input class="form-control" type="text" id="lblGross" name="lblGross" />
+      </div>
+
+      <div class="form-group">
+        <label for="lblIva">IVA:</label>
+        <input class="form-control" type="text" id="lblIva" name="lblIva" />
+      </div>
+
+      <div class="form-group">
+        <label for="lblTotal">Importe total:</label>
+        <input class="form-control" type="text" id="lblTotal" name="lblTotal" />
+      </div>
+
+      <button type="submit" class="btn btn-primary">Añadir</button>
+    </form>
+  </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+
+</html>

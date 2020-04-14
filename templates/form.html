@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <title>Generador Facturas</title>
+
+    <script>
+      function isEmpty(field)
+      {
+        return (field.value.trim().length == 0);
+      }
+
+      function check()
+      {
+        const lblCif = document.getElementById("lblCif");
+        const lblName = document.getElementById("lblName");
+        const lblAddress = document.getElementById("lblAddress");
+        const lblCity = document.getElementById("lblCity");
+        const lblProvince = document.getElementById("lblProvince");
+        const lblPostalCode = document.getElementById("lblPostalCode");
+        const lblCountry = document.getElementById("lblCountry");
+        const lblContact = document.getElementById("lblContact");
+        const lblEmail = document.getElementById("lblEmail");
+        const lblPhone = document.getElementById("lblPhone");
+
+        return (
+            !isEmpty(lblCif) && !isEmpty(lblName) && !isEmpty(lblAddress) &&
+            !isEmpty(lblCity) && !isEmpty(lblProvince) &&
+            !isEmpty(lblPostalCode) && !isEmpty(lblCountry) &&
+            !isEmpty(lblContact) && !isEmpty(lblEmail) && !isEmpty(lblPhone)
+        )
+      }
+    </script>
+
+  </head>
+
+  <body>
+    <!-- CIF, nombre, dirección, población, provincia, código postal, país, persona de contacto, email, y teléfono -->
+    <div class="container mb-4">
+      <h1>
+        {% if origin == 'issuer' %}
+          Datos del emisor
+        {% else %}
+          Datos del cliente
+        {% endif %}
+      </h1>
+      <form id="formIssuer"
+            action="{{ origin }}"
+            method="post"
+            onsubmit="return check()">
+        <div class="form-group">
+        <label for="lblCif">C.I.F.:</label>
+        <input class="form-control" type="text" id="lblCif" name="lblCif" />
+        </div>
+
+        <div class="form-group">
+        <label for="lblName">Nombre:</label>
+        <input class="form-control" type="text" id="lblName" name="lblName" />
+        </div>
+
+        <div class="form-group">
+        <label for="lblAddress">Dirección:</label>
+        <input class="form-control" type="text" id="lblAddress" name="lblAddress" />
+        </div>
+
+        <div class="form-group">
+        <label for="lblCity">Población:</label>
+        <input class="form-control" type="text" id="lblCity" name="lblCity" />
+        </div>
+
+        <div class="form-group">
+        <label for="lblProvince">Provincia:</label>
+        <input class="form-control" type="text" id="lblProvince" name="lblProvince" />
+        </div>
+
+        <div class="form-group">
+        <label for="lblPostalCode">Código Postal:</label>
+        <input class="form-control" type="text" id="lblPostalCode" name="lblPostalCode" />
+        </div>
+
+        <div class="form-group">
+        <label for="lblCountry">País:</label>
+        <input class="form-control" type="text" id="lblCountry" name="lblCountry" />
+        </div>
+
+        <div class="form-group">
+        <label for="lblContact">Persona de contacto:</label>
+        <input class="form-control" type="text" id="lblContact" name="lblContact" />
+        </div>
+
+        <div class="form-group">
+        <label for="lblEmail">Email:</label>
+        <input class="form-control" type="text" id="lblEmail" name="lblEmail" />
+        </div>
+
+        <div class="form-group">
+        <label for="lblPhone">Teléfono:</label>
+        <input class="form-control" type="text" id="lblPhone" name="lblPhone" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Añadir</button>
+      </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+
+</html>
